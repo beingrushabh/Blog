@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import axios from "axios";
 import Head from "../header";
+import { Redirect } from "react-router";
 class PostBlog extends Component {
   state = {
     editorHtml: "",
@@ -12,6 +13,7 @@ class PostBlog extends Component {
     title: "",
     jist: "",
     author: "Rushabh",
+    published: false,
   };
 
   handleChange(html) {
@@ -32,7 +34,11 @@ class PostBlog extends Component {
     };
     axios
       .post("http://localhost:5000/api/blogs/", params)
-      .then((data) => console.log(data))
+      .then((data) => {
+        this.setState({
+          published: !this.state.published,
+        });
+      })
       .catch((error) => alert("error, try again"));
   }
   UpdateTitle(event) {
@@ -53,6 +59,15 @@ class PostBlog extends Component {
     });
   }
   render() {
+    if (this.state.published) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/${this.state.author}`,
+          }}
+        />
+      );
+    }
     return (
       <div>
         <div className="container">
@@ -97,7 +112,7 @@ class PostBlog extends Component {
             </div>
 
             <div className="themeSwitcher">
-              <label>Theme: </label> &nbsp;
+              <label>Theme:</label> &nbsp;
               <select onChange={(e) => this.handleThemeChange(e.target.value)}>
                 <option value="snow">Snow</option>
                 <option value="bubble">Bubble</option>
@@ -110,7 +125,7 @@ class PostBlog extends Component {
               Clear
             </button>
             <button className="submit btn btn-success" type="submit">
-              Submit
+              Publish
             </button>
           </form>
         </div>
@@ -132,7 +147,7 @@ PostBlog.modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
     [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
+    ["bold", "italic", "underline", "strike", "blockquote", "hr"],
     [
       { list: "ordered" },
       { list: "bullet" },

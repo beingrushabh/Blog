@@ -1,9 +1,36 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
 class Head extends Component {
-  state = {};
+  state = {
+    loggedout: false,
+  };
+  constructor(props) {
+    super(props);
+  }
+
+  handleLogOut = (e) => {
+    fetch("/api/logout", { credentials: "include" }).then(() => {
+      sessionStorage.setItem("loggedIn", false);
+      this.setState({
+        loggedout: !this.state.loggedout,
+      });
+    });
+  };
+
   render() {
+    let isLoggedIn = sessionStorage.getItem("loggedIn");
+    if (isLoggedIn == false) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/",
+          }}
+        />
+      );
+    }
+    console.log(isLoggedIn);
     return (
       <div>
         {/* className="fixed-top" */}
@@ -15,22 +42,10 @@ class Head extends Component {
 
             <nav className="nav-menu d-none d-lg-block">
               <ul>
-                <li className="active">
+                {/* <li className="active">
                   <a href="index.html">Home</a>
-                </li>
-                <li>
-                  <a href="#about">About</a>
-                </li>
-                <li>
-                  <a href="#services">Services</a>
-                </li>
-                <li>
-                  <a href="#portfolio">Blogs</a>
-                </li>
-                <li>
-                  <a href="#team">Team</a>
-                </li>
-                <li className="drop-down">
+                </li> */}
+                {/* <li className="drop-down">
                   <a href="">Drop Down</a>
                   <ul>
                     <li>
@@ -66,22 +81,31 @@ class Head extends Component {
                       <a href="#">Drop Down 4</a>
                     </li>
                   </ul>
-                </li>
-                <li>
-                  <a href="#contact">Contact</a>
-                </li>
-                <li>
-                  <Link to={"/login"}>Log In</Link>
-                </li>
-                <li>
-                  <Link to={"/register"}>Register</Link>
-                  <Link to={"/logout"}>Log out</Link>
-                </li>
+                </li> */}
+                {isLoggedIn == "true" ? (
+                  <li>
+                    <a
+                      style={{ cursor: "pointer" }}
+                      onClick={this.handleLogOut}
+                    >
+                      Log out
+                    </a>
+                  </li>
+                ) : (
+                  <li>
+                    <Link to={"/login"}>Log In</Link>
+                  </li>
+                )}
+                {isLoggedIn == "false" && (
+                  <li>
+                    <Link to={"/register"}>Register</Link>
+                  </li>
+                )}
               </ul>
             </nav>
 
-            <a href="#about" className="get-started-btn scrollto">
-              Get Started
+            <a href="/PostBlog" className="get-started-btn scrollto">
+              Add a Blog
             </a>
           </div>
         </header>

@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import "./TheBlog.css";
 import Blog_img from "../resources/Doctor_blog.jpg";
 import axios from "axios";
+import MiniProfile from "./MiniProfile";
 
 class TheBlog extends Component {
   state = {
     blog: [],
   };
   async componentDidMount() {
-    await axios
-      .get(`http://localhost:5000/api/blogs/blog/${this.props.id}`)
-      .then((data) => {
-        this.setState({ blog: data.data[0] });
-        console.log(data.data);
-      });
+    var data = await axios.get(
+      `http://localhost:5000/api/blogs/blog/${this.props.id}`
+    );
+    this.setState({ blog: data.data[0] });
+    console.log(data.data);
   }
   render() {
     return (
@@ -33,8 +33,10 @@ class TheBlog extends Component {
                     <figure class="author-figure mb-0 mr-3 d-inline-block">
                       <img src={Blog_img} alt="Image" class="img-fluid" />
                     </figure>
-                    <span class="d-inline-block mt-1">By Carrol Atkinson</span>
-                    <span>&nbsp;-&nbsp; February 10, 2019</span>
+                    <span class="d-inline-block mt-1">
+                      By {this.state.blog.author}
+                    </span>
+                    <span>&nbsp;-&nbsp; {this.state.blog.date}</span>
                   </div>
                 </div>
               </div>
@@ -255,46 +257,7 @@ class TheBlog extends Component {
                   </form>
                 </div>
                 {/* <!-- END sidebar-box --> */}
-                <div class="sidebar-box">
-                  <div class="bio text-center">
-                    <img
-                      src={Blog_img}
-                      alt="Image Placeholder"
-                      class="img-fluid mb-5"
-                    />
-                    <div class="bio-body">
-                      <h2>Craig David</h2>
-                      <p class="mb-4">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Exercitationem facilis sunt repellendus excepturi
-                        beatae porro debitis voluptate nulla quo veniam fuga sit
-                        molestias minus.
-                      </p>
-                      <p>
-                        <a
-                          href="#"
-                          class="btn btn-primary btn-sm rounded px-4 py-2"
-                        >
-                          Read my bio
-                        </a>
-                      </p>
-                      <p class="social">
-                        <a href="#" class="p-2">
-                          <span class="fa fa-facebook"></span>
-                        </a>
-                        <a href="#" class="p-2">
-                          <span class="fa fa-twitter"></span>
-                        </a>
-                        <a href="#" class="p-2">
-                          <span class="fa fa-instagram"></span>
-                        </a>
-                        <a href="#" class="p-2">
-                          <span class="fa fa-youtube-play"></span>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <MiniProfile userId={this.state.blog.author} />
                 {/* <!-- END sidebar-box -->   */}
                 <div class="sidebar-box">
                   <h3 class="heading">Popular Posts</h3>

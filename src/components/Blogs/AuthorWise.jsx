@@ -9,6 +9,7 @@ class AuthorWise extends Component {
     postBlog: false,
     author: "rushabh07",
     blogs: [],
+    user: [],
     cover: "../121436.jpg",
   };
 
@@ -19,19 +20,21 @@ class AuthorWise extends Component {
   }
 
   componentDidMount() {
-    axios
-      .get(`http://localhost:5000/api/blogs`)
-      .then((data) => {
-        this.setState({
-          blogs: data.data,
-        });
+    axios.get(`http://localhost:5000/api/blogs`).then((data) =>
+      this.setState({
+        blogs: data.data,
       })
-      .catch((err) => {
-        throw err;
-      });
+    );
+
+    // axios.get(`/api/users/userId/${this.props.id}`).then((data) =>
+    //   this.setState({
+    //     user: data.data[0],
+    //   })
+    // );
   }
 
   render() {
+    console.log(this.state.user);
     console.log(this.state.blogs);
     const AuthorBlogs = this.state.blogs.map((instance) => {
       return (
@@ -66,7 +69,7 @@ class AuthorWise extends Component {
                   <h1
                     style={{ textShadow: "3px 3px 5px rgba(255,255,255,0.2)" }}
                   >
-                    {this.state.author}
+                    {this.state.user.username}
                   </h1>
                   <span className="subheading">Let the story begin..</span>
                 </div>

@@ -9,4 +9,17 @@ router.get("/", (req, res) => {
     res.json(result);
   });
 });
+
+router.get("/:id", (req, res) => {
+  User.find({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.json(result);
+  });
+});
+router.get("/userId/:userId", (req, res) => {
+  User.find({ userId: req.params.userId }).then((result) => {
+    console.log(result);
+    res.json(result);
+  });
+});
 module.exports = router;

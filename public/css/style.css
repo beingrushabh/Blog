@@ -127,7 +127,8 @@ h6 {
   position: relative;
   color: #5f687b;
   transition: 0.3s;
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 50 !important;
   font-family: "Open Sans", sans-serif;
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-
+import "./header.css";
 class Head extends Component {
   state = {
     loggedout: false,
@@ -82,6 +82,9 @@ class Head extends Component {
                     </li>
                   </ul>
                 </li> */}
+                <li id="search-bar">
+                  <input type="search" placeholder="Search" />
+                </li>
                 {isLoggedIn == "true" ? (
                   <li>
                     <a
@@ -96,9 +99,14 @@ class Head extends Component {
                     <Link to={"/login"}>Log In</Link>
                   </li>
                 )}
-                {isLoggedIn == "false" && (
+                {isLoggedIn != "true" && (
                   <li>
                     <Link to={"/register"}>Register</Link>
+                  </li>
+                )}
+                {isLoggedIn == "true" && (
+                  <li>
+                    <a>profile pic</a>
                   </li>
                 )}
               </ul>

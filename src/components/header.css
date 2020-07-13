@@ -1,0 +1,52 @@
+#search-bar input {
+  outline: none;
+}
+#search-bar input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  font-size: 100% !important;
+}
+#search-bar input::-webkit-search-decoration,
+#search-bar input::-webkit-search-cancel-button {
+  display: none;
+}
+
+#search-bar input[type="search"] {
+  background: #ededed
+    url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat
+    9px center;
+
+  -webkit-border-radius: 5em;
+  -moz-border-radius: 5em;
+  border-radius: 5em;
+
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+/* Demo 2 */
+#search-bar input[type="search"] {
+  width: 15px;
+  padding: 0px 10px;
+  color: transparent;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+#search-bar input[type="search"]:hover {
+  box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.1);
+}
+#search-bar input[type="search"]:focus {
+  width: 230px;
+  padding-left: 32px;
+  color: #000;
+
+  cursor: auto;
+}
+#search-bar input:-moz-placeholder {
+  color: transparent;
+}
+#search-bar input::-webkit-input-placeholder {
+  color: transparent;
+}

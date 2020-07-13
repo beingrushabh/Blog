@@ -12,6 +12,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const BlogsApi = require("./routes/blogs");
 const UserApi = require("./routes/users");
+const SessionApi = require("./routes/session");
 expand(dotenv);
 
 const url =
@@ -57,6 +58,7 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 
 app.use("/api/blogs", BlogsApi);
 app.use("/api/users", UserApi);
+// app.use("/api/session", SessionApi);
 
 app.use(loginRegister);
 

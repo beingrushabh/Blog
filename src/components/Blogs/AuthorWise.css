@@ -13,6 +13,159 @@ body {
   font-family: "Lora", "Times New Roman", serif;
 }
 
+:focus {
+  outline: -webkit-focus-ring-color auto 0 !important;
+}
+
+#tagline_container {
+  border-bottom: 1px solid black;
+}
+
+#display_tagline span{
+  margin-left:20px;
+}
+
+#edit_tagline {
+  display: flex;
+  justify-content: center;
+}
+
+.tagline_full {
+  background-color: #f3f1f2;
+  border : 0;
+  flex-grow: 1;
+  height : 36px;
+  text-align: center;
+  overflow-y: hidden;
+}
+
+.err {
+  color : red;
+}
+
+#newUrl {
+  display: none;
+}
+
+.hr {
+  margin:0;
+  border-top: 1px solid black;
+}
+
+#opaque_background {
+  display: none;
+  background-color: rgba(255,255,255,0.5);
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+#profile_info{
+  margin: 50px auto 0;
+  position: relative;
+  text-align: center;
+  width : 67%;
+  z-index: 2;
+}
+
+#profile_img_container {
+  border-radius: 50%;
+  display: inline-block;
+  height : 200px;
+  position: relative;
+  width : 200px;
+}
+
+#profile_img {
+  border-radius: 50%;
+  height : 100%;
+  object-fit: cover;
+  width : 100%;
+}
+
+#update_profile_img_option,#loader_container {
+  align-items: center;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  height : 200px;
+  justify-content: center;
+  position: absolute;
+  top : 0;
+  transition: visibility 0.01s;
+  visibility: hidden;
+  width : 200px;
+}
+
+#loader_container {
+  visibility: visible;
+}
+
+.loader {
+  border-radius: 50%;
+  border: 5px solid white;
+  border-top : 5px solid #007bff;
+  height : 40px;
+  width : 40px;
+  animation: spin 1s linear infinite;
+}
+
+.loader2 {
+  border: 3px solid black;
+  border-top: 3px solid #007bff;
+  border-right : 3px solid #007bff;
+  border-left : 3px solid #007bff;
+  height : 30px;
+  width : 30px;
+}
+
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg); }
+}
+#update_profile_img_option > svg,
+#update_profile_img_option > span {
+  color: rgba(255,255,255,0.9);
+}
+
+#profile_img_container:hover #update_profile_img_option{
+  cursor: pointer;
+  visibility: visible;
+}
+
+#new_profile {
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+}
+
+#new_profile img{
+  border-radius: 50%;
+  height : 200px;
+  object-fit: cover;
+  width : 200px;
+}
+
+#upload_file {
+  display: none;
+}
+
+#update_img_form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.update_img_form_field {
+  border: 0;
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
 p {
   line-height: 1.5;
   margin: 30px 0;

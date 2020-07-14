@@ -20,6 +20,13 @@ const UserSchema = new Schema({
     password : {
         type : String,
         required : true,
+    },
+    tagline : {
+        type : String,
+    },
+    filename : {
+        type : String,
+        required : true
     }
 });
 

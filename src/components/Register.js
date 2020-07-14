@@ -17,6 +17,11 @@ class RegisterForm extends React.Component {
       passwordErr: "",
       confirmPassword: "",
       confirmPasswordErr: "",
+      tagline: "",
+      taglineErr: "",
+      filename: "",
+      filedata: {},
+      fileErr: ""
     };
   }
   updateUserName = (e) => {
@@ -40,6 +45,12 @@ class RegisterForm extends React.Component {
       emailErr: "",
     }));
   };
+  updateTagLine = (e)=>{
+    const tagline = e.target.value;
+    this.setState(()=>({
+      tagline
+    }));
+  }
   updatePassword = (e) => {
     const password = e.target.value;
     this.setState(() => ({
@@ -54,10 +65,18 @@ class RegisterForm extends React.Component {
       confirmPasswordErr: "",
     }));
   };
+  handleFileChange = (e) =>{
+    const filedata = e.target.files[0];
+    const filename = e.target.value;
+    this.setState(()=>({
+      filename,filedata,fileErr : ""
+    }));
+  }
   handleSubmit = (e) => {
+    const target = e.target;
     e.preventDefault();
     let areErrs = false;
-    const { username, userId, email, password, confirmPassword } = this.state;
+    const { username, userId, email, password, confirmPassword,filename } = this.state;
     if (username.length < 8) {
       areErrs = true;
       this.setState(() => ({
@@ -90,16 +109,39 @@ class RegisterForm extends React.Component {
         confirmPasswordErr: "both password field should match",
       }));
     }
+
+    if(filename){
+
+      const extensions = [".jpg",".jpeg",".png"];
+      const fileExtension = filename.substr(filename.lastIndexOf("."));
+      if(extensions.indexOf(fileExtension)===-1){
+        areErrs = true;
+        this.setState(()=>({
+          fileErr : "invalid file"
+        }));
+      }
+    }
+
     if (!areErrs) {
-      const { username, userId, email, password } = this.state;
-      const user = {
-        username,
-        userId,
-        email,
-        password,
-      };
+      const { username, userId, email, password,tagline,filename,filedata } = this.state;
+      // console.log(username, userId, email, password,tagline,filename,filedata);
+      // console.log(target);
+      const formData = new FormData();
+      formData.append('filename',filedata);
+      formData.append('username',username);
+      formData.append('userId',userId);
+      formData.append('email',email);
+      formData.append('password',password);
+      formData.append('tagline',tagline);
+      // formData.append('filename',filename);
+       const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    console.log(formData);
       axios
-        .post("/api/register", user)
+        .post("/api/register", formData,config)
         .then((res) => {
           const data = res.data;
           if (data.err) {
@@ -143,6 +185,7 @@ class RegisterForm extends React.Component {
                     )}
                     <form
                       method="post"
+                      encType='multipart/form-data'
                       noValidate={true}
                       class="user"
                       onSubmit={this.handleSubmit}
@@ -194,6 +237,19 @@ class RegisterForm extends React.Component {
                           <div className="clientErr">{this.state.emailErr}</div>
                         )}
                       </div>
+                      <div className='form-group'>
+                        <textarea
+                            name='tagline'
+                            placeholder='enter your favourite tagline'
+                            className='form-control form-control-user textarea'
+                            value={this.state.tagline}
+                            onChange={this.updateTagLine}
+                        />
+
+                        {this.state.taglineErr && (
+                            <div className='clientErr'>{this.state.taglineErr}</div>
+                        )}
+                      </div>
                       <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
                           <input
@@ -227,6 +283,19 @@ class RegisterForm extends React.Component {
                             </div>
                           )}
                         </div>
+                      </div>
+                      <div className="form-group">
+                        <input
+                            type="file"
+                            name="filename"
+                            placeholder="profile Pic"
+                            value={this.state.filename}
+                            onChange={this.handleFileChange}
+                        />
+
+                        {this.state.fileErr && (
+                            <div className="clientErr">{this.state.fileErr}</div>
+                        )}
                       </div>
                       <button
                         type="submit"

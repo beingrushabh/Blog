@@ -3,7 +3,8 @@ const registerSchema = Joi.object({
    username : Joi.string().alphanum().min(8).required(),
    email : Joi.string().email().required(),
    password : Joi.string().min(8).required(),
-   userId : Joi.string().min(8).required()
+   userId : Joi.string().min(8).required(),
+    tagline : Joi.string()
 }).options({
     abortEarly : false
 });

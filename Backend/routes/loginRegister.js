@@ -3,20 +3,57 @@ const bcrypt = require('bcryptjs');
 const User = require("../models/User");
 const {registerSchema,loginSchema} = require("../validation/Register");
 const passport = require('passport');
-
+const multer = require('multer');
+const s3bucket = require('../config/s3');
+// const path = require('path');
+// const upload = multer({dest : path.join(__dirname,"..","uploads")});
+const storage = multer.memoryStorage();
+const upload = multer({storage});
 // const loginSchema = require("../validation/Login");
 
 async function addUser(req,res){
    const errors = {};
+   const {username,userId,email,password,tagline} = req.body;
+   const file = req.file;
+   // console.log(req.body,req.file);
+   let user = {username,userId,email,password,tagline};
    try{
-      const user = await registerSchema.validateAsync(req.body);
+      user = await registerSchema.validateAsync(user);
       const userExists = await User.findOne({userId : req.body.userId});
       if(userExists) throw new Error("User Id already in use!!");
       const passwordSalt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(user.password,passwordSalt);
-      const newUser = new User(user);
+      if(!user.tagline){
+         user.tagline = "Hello There";
+      }
+
+
+
+
+
+        const params = {
+           Bucket: 'shopin1',
+           region:'us-east-1',
+           Key: file.originalname,
+           Body: file.buffer,
+           ContentType: file.mimetype,
+        };
+
+        const uploadPromise = new Promise(function(resolve,reject){
+           s3bucket.upload(params,function(err,data){
+              if(err){
+                 reject(err);
+              }else{
+                 resolve({status : "success"});
+              }
+           });
+        });
+
+        await uploadPromise;
+        user.filename = "https://shopin1.s3.amazonaws.com/" + params.Key;
+        const newUser = new User(user);
+
       await newUser.save();
-      // console.log(newUser);
       res.json({err : ""});
    }
    catch(e){
@@ -51,7 +88,7 @@ async function validateUser(req,res,next){
    }
 }
 
-router.post("/api/register",addUser);
+router.post("/api/register",upload.single('filename'),addUser);
 router.post("/api/login",validateUser,function(req,res,next){
    passport.authenticate('local',function(err,user,errors){
       if(user){
